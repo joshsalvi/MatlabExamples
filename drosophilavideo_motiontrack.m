@@ -84,7 +84,7 @@ set(spn, 'Position', [0.4*snp(1) 0.15*snp(2) 1.6*snp(3) 0.8*snp(4)]);set(sph,'Yt
 xlabel('Time (sec)');ylabel('Diff');
 axis([0 tvec(end) -0.5 8]);        % set axes [xmin xmax ymin ymax]
 for i = 1:nFrames                   % loop through each frame
-sph=subplot(2,1,1)
+sph=subplot(2,1,1);
 imagesc(vidmov(i).cdata);colormap('gray');    % plot video frame
 spp = get(sph, 'pos');
 set(sph, 'Position', [1.8*spp(1) 0.9*spp(2) 0.7*spp(3) 1.4*spp(4)]);set(sph,'Xticklabel','');set(sph,'Yticklabel','');
