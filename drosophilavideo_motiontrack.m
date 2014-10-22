@@ -56,11 +56,18 @@ end
  
 % Construct a time vector (seconds)
 tvec = linspace(0,nFrames/vidobj.FrameRate,nFrames);
- 
+ROI = ones(vidHeight,vidWidth);
+%% Draw an ROI (optional)
+
+% This allows you to draw a polygon 
+ROI = roipoly(vidmov(1).cdata);
+figure;
+imagesc(ROI);colormap gray;
+
 %%
 % Find the mean difference between each frame and a previous one
 for j = 2:nFrames
-    movdiff(j)=mean(mean(mean(vidmov(j).cdata-vidmov(j-1).cdata)));
+    movdiff(j)=mean(mean(mean(vidmov(j).cdata(ROI==1)-vidmov(j-1).cdata(ROI==1))));
 end
  
 %{
