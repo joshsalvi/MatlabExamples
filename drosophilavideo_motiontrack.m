@@ -14,7 +14,7 @@ set(0,'DefaultFigureWindowStyle','docked')
 vid_in = '/Users/joshsalvi/Downloads/2014 10 21 cell 4 gamma 2  ODOR LIGHT 1_2014-10-21-181633-0000.mp4';
  
 % INPUT where you'd like it to be saved.
-vid_out = '/Users/joshsalvi/Downloads/vidout.mat';
+vid_out = '/Users/joshsalvi/Downloads/vidout';
  
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
@@ -89,13 +89,13 @@ open(writerObj)                     % open the object
 set(0,'DefaultFigureWindowStyle','default')
 h2=figure;                          % set the figure for movie making
 spn=subplot(2,1,2); hold on;plot(tvec,movdiff,'k')  % initial plot of time series in black
-snp = get(sph, 'pos');
-set(spn, 'Position', [0.4*snp(1) 0.15*snp(2) 1.6*snp(3) 0.8*snp(4)]);set(sph,'Yticklabel','')
+snp = get(spn, 'pos');
+set(spn, 'Position', [0.4*snp(1) 0.15*snp(2) 1.6*snp(3) 0.8*snp(4)]);set(spn,'Yticklabel','')
 xlabel('Time (sec)');ylabel('Diff');
-axis([0 tvec(end) -0.5 8]);        % set axes [xmin xmax ymin ymax]
+axis([0 tvec(end) -0.5 12]);        % set axes [xmin xmax ymin ymax]
 for i = 1:nFrames                   % loop through each frame
 sph=subplot(2,1,1);
-J=roifill(vidmov(1).cdata(:,:,1),ROI2);
+J=roifill(vidmov(i).cdata(:,:,1),ROI2);
 imshow(J);colormap('gray');    % plot video frame
 spp = get(sph, 'pos');
 set(sph, 'Position', [1.8*spp(1) 0.9*spp(2) 0.7*spp(3) 1.4*spp(4)]);set(sph,'Xticklabel','');set(sph,'Yticklabel','');
@@ -103,7 +103,7 @@ spn=subplot(2,1,2);plot(tvec,movdiff,'k') ;hold on;plot(tvec(1:i),movdiff(1:i),'
 snp = get(sph, 'pos');
 set(spn, 'Position', [0.4*snp(1) 0.15*snp(2) 1.6*snp(3) 0.8*snp(4)]);set(sph,'Yticklabel','')
 xlabel('Time (sec)');ylabel('Diff');
-axis([0 tvec(end) -0.5 8]); 
+axis([0 tvec(end) -0.5 12]); 
 h(i) = getframe(h2);                % create object/snapshot of figure frame
 writeVideo(writerObj,h(i));         % write to video object
 end
