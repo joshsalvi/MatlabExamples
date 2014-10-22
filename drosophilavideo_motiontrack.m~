@@ -66,7 +66,7 @@ ROI = ones(vidHeight,vidWidth);
 ROI = roipoly(vidmov(1).cdata(:,:,1));
 figure;
 imagesc(ROI);colormap gray;
-ROI2=abs(ROI-1);
+
 %%
 % Find the mean difference between each frame and a previous one
 for j = 2:nFrames
@@ -95,8 +95,7 @@ xlabel('Time (sec)');ylabel('Diff');
 axis([0 tvec(end) -0.5 8]);        % set axes [xmin xmax ymin ymax]
 for i = 1:nFrames                   % loop through each frame
 sph=subplot(2,1,1);
-J=roifill(vidmov(1).cdata(:,:,1),ROI2);
-imshow(J);colormap('gray');    % plot video frame
+imagesc(vidmov(i).cdata);colormap('gray');    % plot video frame
 spp = get(sph, 'pos');
 set(sph, 'Position', [1.8*spp(1) 0.9*spp(2) 0.7*spp(3) 1.4*spp(4)]);set(sph,'Xticklabel','');set(sph,'Yticklabel','');
 spn=subplot(2,1,2);plot(tvec,movdiff,'k') ;hold on;plot(tvec(1:i),movdiff(1:i),'r');    % plot time series up to this frame in red
