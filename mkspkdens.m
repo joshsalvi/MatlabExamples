@@ -1,4 +1,4 @@
-function [spkdens spkbinned kernel] = mkspkdens(spkvec,tvec,thresh,sigma,plotyn)
+function [spkdens, spkbinned, kernel,pks,trs] = mkspkdens(spkvec,tvec,thresh,sigma,plotyn)
 % This function creates a spike density using a Gaussian kernel density
 % estimator.
 %
@@ -32,15 +32,15 @@ function [spkdens spkbinned kernel] = mkspkdens(spkvec,tvec,thresh,sigma,plotyn)
 % Step size in time (dt)
 dt = tvec(2)-tvec(1);
 % Define the edges of the spike density estimate
-edges = [-3*sigma:dt:3*sigma];
+edges = (-3*sigma:dt:3*sigma);
 % Define the kernel
 kernel = normpdf(edges,0,sigma)*dt;
 
 % Find the spikes using a defined threshold
 if isempty(thresh) == 0
-    pks = PTDetect(spkvec,thresh);
+    [pks trs] = PTDetect(spkvec,thresh);
 else
-    [c1 c2] = twoclass(spkvec,1e-14);
+    [c1, c2] = twoclass(spkvec,1e-14);
     thresh = max([c1 c2]);
     pks = PTDetect(spkvec,thresh);
 end
@@ -53,12 +53,14 @@ spkdens = conv(spkbinned,kernel);
 % that you exclude edge artifacts
 center = ceil(length(edges)/2);
 spkdens = spkdens(center:(length(tvec)-1) + center-1);
+spkdens2 = spkdens>mean(spkdens)+std(spkdens);
 
 if plotyn == 1
     figure;
     subplot(3,1,1);plot(tvec,spkvec,'k');title('Time Series');ylabel('X');xlabel('Time');
     subplot(3,1,2);plot(tvec,spkvec,'k');hold on;scatter(tvec(spkbinned==1),spkvec(spkbinned==1),'r.');title('Time Series with Selected Spikes');ylabel('X');xlabel('Time');
     subplot(3,1,3);plot(tvec(1:length(spkdens)),spkdens,'r');title('Spike Density');ylabel('Density');xlabel('Time');
+    hold on;scatter(tvec(spkdens2==1),spkdens(spkdens2==1),'b.');
 end
 end
 
@@ -136,7 +138,7 @@ while 1
         end
     end
     c2 = mean(class2); c1=mean(class1);
-    if (abs(lastc2-c2) < e) & (abs(lastc1-c1) < e)
+    if (abs(lastc2-c2) < e) && (abs(lastc1-c1) < e)
         return;
     end
     lastc2=c2; lastc1=c1;

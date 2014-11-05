@@ -1,4 +1,4 @@
-function [CDspkisi spkisivec spkbinned spkisihista spkisihistb] = findspkisi(spkvec,tvec,thresh,plotyn)
+function [CDspkisi, spkisivec, spkbinned, spkisihista, spkisihistb] = findspkisi(spkvec,tvec,thresh,plotyn)
 % This function creates a spike density using a Gaussian kernel density
 % estimator.
 %
@@ -32,7 +32,7 @@ function [CDspkisi spkisivec spkbinned spkisihista spkisihistb] = findspkisi(spk
 if isempty(thresh) == 0
     pks = PTDetect(spkvec,thresh);
 else
-    [c1 c2] = twoclass(spkvec,1e-14);
+    [c1, c2] = twoclass(spkvec,1e-14);
     thresh = max([c1 c2]);
     pks = PTDetect(spkvec,thresh);
 end
@@ -40,11 +40,12 @@ spkbinned=zeros(1,length(spkvec));
 spkbinned(pks)=1;
 
 % Find all of the inter-spike intervals
+spkisivec=zeros(1,length(spkbind)-1);
 for j = 2:length(spkbind)
     spkisivec(j-1) = tvec(spkbind(j))-tvec(spkbind(j-1));
 end
 % Calculate the coefficient of dispersion and the histogram
-[spkisihista spkisihistb] = ksdensity(spkisivec);
+[spkisihista, spkisihistb] = ksdensity(spkisivec);
 %[spkisihista spkisihistb] = hist(spkisivec,fdhists(spkisivec));
 %spkisihista=spkisihista./sum(spkisihista);
 CDspkisi = var(spkisivec)/mean(spkisivec);  % coefficient of dispersion
@@ -155,7 +156,7 @@ while 1
         end
     end
     c2 = mean(class2); c1=mean(class1);
-    if (abs(lastc2-c2) < e) & (abs(lastc1-c1) < e)
+    if (abs(lastc2-c2) < e) && (abs(lastc1-c1) < e)
         return;
     end
     lastc2=c2; lastc1=c1;
