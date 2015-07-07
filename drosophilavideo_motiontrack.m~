@@ -11,10 +11,10 @@ set(0,'DefaultFigureWindowStyle','docked')
 %%%%%%%%%%%%%%%%%%%%
  
 % INPUT the filename of your video
-vid_in = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Composite_(NTSC)_20150626_1255.mov';
+vid_in = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Composite_(NTSC)_20150701_1837.mov';
  
 % INPUT where you'd like it to be saved.
-vid_out = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Analysis-Composite_(NTSC)_20150626_1255';
+vid_out = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Analysis-Composite_(NTSC)_20150701_1837';
  
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
