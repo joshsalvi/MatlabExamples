@@ -4,14 +4,15 @@
 %
 %
  
-clear all; close all;
+clear all; 
+%close all;
 set(0,'DefaultFigureWindowStyle','docked') 
  
 %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%
  
 % INPUT the filename of your video
-vid_in = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Composite_(NTSC)_20150701_1837.mov';
+vid_in = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Zebrafish/20150709/20150709-1715-Bapta/Composite_(NTSC)_20150709_1718_150ugmlBapta.mov';
  
 % INPUT where you'd like it to be saved.
 vid_out = '/Users/joshsalvi/Documents/Lab/Lab/Videos/Analysis-Composite_(NTSC)_20150701_1837';
@@ -146,3 +147,18 @@ h(i) = getframe(h2);                % create object/snapshot of figure frame
 writeVideo(writerObj,h(i));         % write to video object
 end
 close(writerObj);                   % close video object
+
+%%
+for j = 2:nFrames
+    movdiff4(j-1).cdata = double(vidmov(j).cdata) - double(vidmov(j-1).cdata);
+end
+
+movdiff4n = abs(movdiff4(1).cdata);
+for j = 2:nFrames-1
+    movdiff4n = double(movdiff4n) + abs(double(movdiff4(j).cdata));
+end
+
+titletext='150 µg/ml BAPTA  ';
+figure;
+subplot_tight(1,2,1,[0.11 0.11]);imagesc(vidmov(1).cdata);title(titletext);colormap gray
+subplot_tight(1,2,2,[0.11 0.11]);imagesc(movdiff4n(:,:,1));colormap jet;title([titletext ' Difference Image']);
